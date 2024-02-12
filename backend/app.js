@@ -65,3 +65,17 @@ app.get('/users/name/:name', (req, res) => {
         res.status(500).json({mssg : 'Document Not Found'})
       })
 })
+
+//get account by email
+app.get('/users/email/:email', (req, res) => {
+  db.collection('user')
+    .findOne({email : req.params.email})
+    .then(
+      users => {
+          res.status(200).json(users)
+      }
+    )
+    .catch(error => {
+      res.status(500).json({mssg : 'Document Not Found'})
+    })
+})
