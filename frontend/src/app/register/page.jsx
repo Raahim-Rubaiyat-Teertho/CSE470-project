@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 export default function RegisterPage() {
     return(
         <div className="h-screen flex justify-center items-center flex-col w-fit mx-auto p-5">
+            <title>Register</title>
             <div className="px-7 border-2 py-20 rounded-lg">
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight pb-5 text-center">
                 Register

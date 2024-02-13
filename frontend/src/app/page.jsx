@@ -4,6 +4,7 @@ import Link from "next/link"
 export default function Home() {
   return (
     <main>
+      <title>Listen.Express</title>
         <div className="flex items-center justify-center h-screen bg-gradient-to-r from-rose-300 via-pink-400 to-violet-400">
           <div className="p-3 border-2 border-r-4 border-l-4 rounded-md">
             <h1 className="font-black text-6xl text-white">Listen.Express</h1>
