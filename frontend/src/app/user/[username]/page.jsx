@@ -8,6 +8,7 @@ export default async function UserDashboard({params}) {
     console.log(sess);
     return(
         <>
+            <title>Dashboard</title>
             {sess}
         </>
     )
