@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react";
-import { handleLogin } from "./actions";
 import { useRouter } from 'next/navigation'
+import {getSessionId, setSessionId} from "./handleSessions"
 
 
 export default async function LoginPage() {
@@ -26,8 +25,9 @@ export default async function LoginPage() {
         }
 
         else {
-            handleLogin(lnk_json.username);
-            router.push(`/user/${lnk_json.uname}`)
+            setSessionId(lnk_json.uname);
+            const sess = await getSessionId();
+            router.push(`/user/${sess}`)
         }
       }
 

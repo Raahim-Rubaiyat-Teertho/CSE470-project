@@ -1,11 +1,14 @@
-'use client'
+// 'use client'
 import { getSessionData } from "@/app/login/actions"
-import { useEffect } from "react"
+import { getSessionId } from "@/app/login/handleSessions"
+// import { useEffect } from "react"
 
 export default async function UserDashboard({params}) {
+    const sess = await getSessionId();
+    console.log(sess);
     return(
         <>
-            {params.username}
+            {sess}
         </>
     )
 }
