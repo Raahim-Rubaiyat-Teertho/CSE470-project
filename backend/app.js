@@ -79,3 +79,17 @@ app.get('/users/email/:email', (req, res) => {
       res.status(500).json({mssg : 'Document Not Found'})
     })
 })
+
+//create account
+app.post('/account/create', (req, res) => {
+  const info = req.body;
+  
+  db.collection('user')
+    .insertOne(info)
+    .then(result => {
+      res.status(201).json(result);
+    })
+    .catch(err => {
+      res.status(500).json({ mssg : 'Invalid request' })
+    })
+})
