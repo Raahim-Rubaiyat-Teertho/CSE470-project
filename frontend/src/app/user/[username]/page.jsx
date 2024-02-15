@@ -9,9 +9,9 @@ export default async function UserDashboard({params}) {
     return(
         <>
             <title>Dashboard</title>
-            <div className="bg-gray-200 min-h-screen py-8">
+            <div className=" min-h-screen py-8">
       <div className="max-w-lg mx-auto bg-white shadow-md rounded-md p-8">
-        <h1 className="text-3xl font-semibold mb-4">Welcome, hbhjvgh</h1>
+        <h1 className="text-3xl font-semibold mb-4 text-center">Welcome, hbhjvgh</h1>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="font-medium">Username:</p>
