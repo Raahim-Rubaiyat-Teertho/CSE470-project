@@ -21,14 +21,25 @@ export default async function LoginPage() {
         const lnk_json = await lnk_fetch.json();
         console.log(lnk_json);
 
-        if(lnk_json.pass != pass) {
-            alert('Wrong Password')
+        if(lnk_json == null) {
+            alert('Wrong email or password')
+        }
+
+        else if(lnk_json.pass != pass) {
+                alert('Wrong email or Password')
         }
 
         else {
             setSessionId(lnk_json.uname);
             const sess = await getSessionId();
-            router.push(`/user/${sess}`)
+
+            if(lnk_json.category == "not_set") {
+                router.push(`/setup/${sess}`);
+            }
+
+            else {
+                router.push(`/user/${sess}`);
+            }
         }
       }
 
