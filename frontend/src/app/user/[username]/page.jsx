@@ -5,8 +5,9 @@ import { getSessionId } from "@/app/login/handleSessions"
 
 export default async function UserDashboard({params}) {
     const sess = await getSessionId();
-    console.log(sess);
-    return(
+    
+    if(sess) {
+      return(
         <>
             <title>Dashboard</title>
             <div className=" min-h-screen py-8">
@@ -35,4 +36,13 @@ export default async function UserDashboard({params}) {
             
         </>
     )
+    }
+
+    else {
+      return(
+        <>
+          You need to be logged in to view this page
+        </>
+      )
+    }
 }

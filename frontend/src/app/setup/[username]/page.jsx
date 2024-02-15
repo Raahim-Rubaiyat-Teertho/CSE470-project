@@ -38,13 +38,23 @@ export default function ProfileSetup() {
 
                 {   (ls == "ls1")? <></>:
                     (ls == "ls2" && data=='artist') ?
-                    <h1 className="text-xl mt-10 text-center">
-                        Your total is 2000 taka
-                    </h1>
+                    <div>
+                        <h1 className="text-xl mt-10 text-center">
+                            Your total is 2000 taka
+                        </h1>
+                        <div className="flex justify-center">
+                            <Button className="mt-5">Move to payment</Button>
+                        </div>
+                    </div>
                     :
-                    <h1 className="text-xl mt-10 text-center">
-                        Your total is 1000 taka
-                    </h1>
+                    <div>
+                        <h1 className="text-xl mt-10 text-center">
+                            Your total is 1000 taka
+                        </h1>
+                        <div className="flex justify-center">
+                            <Button className="mt-5">Move to payment</Button>
+                        </div>
+                    </div>
                     
                 }
             </div>

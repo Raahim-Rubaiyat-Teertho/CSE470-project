@@ -1,8 +1,10 @@
 const express = require('express');
 const { connectToDb, getDb } = require('./db')
 const { ObjectId } = require('mongodb')
+const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -93,3 +95,14 @@ app.post('/account/create', (req, res) => {
       res.status(500).json({ mssg : 'Invalid request' })
     })
 })
+
+app.get('/get-cookies', (req, res) => {
+  // Access cookies from the request object
+  const cookies = req.cookies["session-id"];
+
+  // Log the cookies
+  console.log('Cookies:', cookies);
+
+  // Send the cookies back as a response
+  res.json({ cookies });
+});
