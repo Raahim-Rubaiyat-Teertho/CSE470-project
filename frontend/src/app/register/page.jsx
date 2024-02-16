@@ -12,8 +12,11 @@ export default async function RegisterPage() {
         const uname = formData.get('uname');
         const pass = formData.get("pass");
         const dob = formData.get('dob');
-        
-        const body = {name, email, uname, pass, dob} 
+        const category = "not_set";
+        const payment =  {paid : false, paid_date : "none", tid : "none"};
+
+        const body = {name, email, uname, pass, dob, category, payment}; 
+
         console.log({name, email, uname, pass, dob})
 
         try {
