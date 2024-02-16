@@ -1,22 +1,59 @@
 "use client"
 
+import { getSessionId } from "@/app/login/handleSessions";
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
 export default function ProfileSetup() {
     const [ls, setLs] = useState("ls1");
     const [data, setData] = useState("")
+    const [user, setUser] = useState("")
+    const art_price = 2000
+    const aud_price = 1000
+    
 
     async function setupData (formData) {
         const categ = formData.get("type")
         console.log(categ)
         setData(categ)
+        const sess = await getSessionId();
+        console.log(sess)
+
+        const lnk = `http://localhost:8000/users/uname/${sess}`;
+        const lnk_ft = await fetch(lnk);
+        const lnk_j = await lnk_ft.json()
+        setUser(lnk_j)
     }
 
     function submit () {
         setLs("ls2")
     }
 
+    async function goPay () {
+        var price = 0
+
+        if(data == "artist") {
+            price += 2000
+        }
+
+        else {
+            price = 1000
+        }
+
+        fetch(
+            "http://localhost:8000/order", {
+                method: "POST",
+                headers: {"content-type" : "application/json"},
+                body: JSON.stringify({type : data, cost : price, user})
+            }
+        )
+        .then(res => res.json())
+        .then(res => {
+            window.location.replace(res.url)
+            console.log(res)
+            console.log(user)
+        })
+    }
     return(
         <>
             <title>Profile Setup</title>
@@ -39,11 +76,18 @@ export default function ProfileSetup() {
                 {   (ls == "ls1")? <></>:
                     (ls == "ls2" && data=='artist') ?
                     <h1 className="text-xl mt-10 text-center">
-                        Your total is 2000 taka
+                        Your total is {art_price} taka
+
+                        <div>
+                            <Button className='mt-5' onClick={goPay}>Move to payment</Button>
+                        </div>
                     </h1>
                     :
                     <h1 className="text-xl mt-10 text-center">
-                        Your total is 1000 taka
+                        Your total is {aud_price} taka
+                        <div>
+                            <Button className='mt-5' onClick={goPay}>Move to payment</Button>
+                        </div>
                     </h1>
                     
                 }
