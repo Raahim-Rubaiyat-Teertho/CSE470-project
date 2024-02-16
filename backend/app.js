@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const { connectToDb, getDb } = require('./db')
 const { ObjectId } = require('mongodb')
 const cookieParser = require('cookie-parser');
 
 const app = express();
+app.use(cors());
 app.use(cookieParser());
 
 const SSLCommerzPayment = require('sslcommerz-lts')
@@ -123,25 +125,67 @@ app.delete('/account/:id', (req, res) => {
     }
 });
 
-// edit account
-app.patch('/users/account/edit/:id', (req, res) => {
-  const updates = req.body
+//edit account
+app.put('/users/account/edit/:uname', async (req, res) => {
+  const updates = req.body;
 
-  if (ObjectId.isValid(req.params.id)) {
-    db.collection('user')
-      .updateOne({ _id : new ObjectId(req.params.id)}, {$set: updates})
-      .then(
-        result => {
-            res.status(200).json(result)
-        }
-      )
-      .catch(error => {
-        res.status(500).json({error : 'Failed to update'})
-      })
-    } else {
-      res.status(500).json({error: 'Invalid uid'})
+  try {
+    // Exclude the _id field from updates
+    delete updates._id;
+
+    const existingUser = await db.collection('user').findOne({ uname: req.params.uname });
+
+    if (!existingUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
     }
+
+    const updatedUser = {
+      ...existingUser,
+      ...updates,
+    };
+
+    const result = await db.collection('user').replaceOne(
+      { uname: req.params.uname },
+      updatedUser
+    );
+
+    if (result.modifiedCount === 1) {
+      res.status(200).json({ message: 'Update successful' });
+    } else {
+      res.status(500).json({ error: 'Failed to update' });
+    }
+  } catch (error) {
+    console.error('Error occurred:', error);
+    res.status(500).json({ error: 'Failed to update' });
+  }
 });
+
+
+// app.patch('/users/account/edit/:uname', async (req, res) => {
+//   const updates = req.body;
+
+//   try {
+//     // Exclude the _id field from updates
+//     delete updates._id;
+
+//     const result = await db.collection('user').updateOne(
+//       { uname: req.params.uname },
+//       { $set: updates }
+//     );
+
+//     if (result.matchedCount === 1) {
+//       res.status(200).json({ message: 'Update successful' });
+//     } else {
+//       res.status(404).json({ error: 'User not found' });
+//     }
+//   } catch (error) {
+//     console.error('Error occurred:', error);
+//     res.status(500).json({ error: 'Failed to update' });
+//   }
+// });
+
+
 
 // subscription related code
 app.post("/order", async (req, res) => {

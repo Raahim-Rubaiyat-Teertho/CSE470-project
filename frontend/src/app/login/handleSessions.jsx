@@ -10,3 +10,8 @@ export async function setSessionId(sessionId) {
     const cookieStore = cookies();
     cookieStore.set("session-id", sessionId);
 }
+
+export async function deleteSessionId(sessionId) {
+  const cookieStore = cookies()
+  cookieStore.set(sessionId, "")
+}
