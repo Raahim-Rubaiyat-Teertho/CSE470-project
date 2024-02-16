@@ -22,7 +22,7 @@ connectToDb((err) => {
         });
         db = getDb();
     }
-})
+});
 
 //get all user accounts
 app.get('/users', (req, res) => {
@@ -40,6 +40,7 @@ app.get('/users', (req, res) => {
 
 //get account by id
 app.get('/users/:id', (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
     db.collection('user')
       .findOne({ _id : new ObjectId(req.params.id)})
       .then(
@@ -48,14 +49,17 @@ app.get('/users/:id', (req, res) => {
         }
       )
       .catch(error => {
-        res.status(500).json({mssg : 'Document Not Found'})
+        res.status(500).json({error : 'Document Not Found'})
       })
-})
+    } else {
+      res.status(500).json({error: 'Invalid uid'})
+    }
+});
 
 //get account by username
-app.get('/users/name/:name', (req, res) => {
+app.get('/users/uname/:uname', (req, res) => {
     db.collection('user')
-      .findOne({uname : req.params.name})
+      .findOne({uname : req.params.uname})
       .then(
         users => {
             res.status(200).json(users)
@@ -64,7 +68,7 @@ app.get('/users/name/:name', (req, res) => {
       .catch(error => {
         res.status(500).json({mssg : 'Document Not Found'})
       })
-})
+});
 
 //get account by email
 app.get('/users/email/:email', (req, res) => {
@@ -78,7 +82,7 @@ app.get('/users/email/:email', (req, res) => {
     .catch(error => {
       res.status(500).json({mssg : 'Document Not Found'})
     })
-})
+});
 
 //create account
 app.post('/account/create', (req, res) => {
@@ -92,4 +96,42 @@ app.post('/account/create', (req, res) => {
     .catch(err => {
       res.status(500).json({ mssg : 'Invalid request' })
     })
-})
+});
+
+//delete account
+app.delete('/account/:id', (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection('user')
+      .deleteOne({ _id : new ObjectId(req.params.id)})
+      .then(
+        result => {
+            res.status(200).json(result)
+        }
+      )
+      .catch(error => {
+        res.status(500).json({error : 'Failed to delete'})
+      })
+    } else {
+      res.status(500).json({error: 'Invalid uid'})
+    }
+});
+
+// edit account
+app.patch('/users/account/edit/:id', (req, res) => {
+  const updates = req.body
+
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection('user')
+      .updateOne({ _id : new ObjectId(req.params.id)}, {$set: updates})
+      .then(
+        result => {
+            res.status(200).json(result)
+        }
+      )
+      .catch(error => {
+        res.status(500).json({error : 'Failed to update'})
+      })
+    } else {
+      res.status(500).json({error: 'Invalid uid'})
+    }
+});
