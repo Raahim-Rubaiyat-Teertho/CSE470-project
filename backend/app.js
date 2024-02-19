@@ -3,6 +3,7 @@ const cors = require('cors');
 const { connectToDb, getDb } = require('./db')
 const { ObjectId } = require('mongodb')
 const cookieParser = require('cookie-parser');
+const userRouter = require('./routes/users.routes')
 
 const app = express();
 app.use(cors());
@@ -33,67 +34,10 @@ connectToDb((err) => {
     }
 });
 
-//get all user accounts
-app.get('/users', (req, res) => {
-    db.collection('user')
-        .find()
-        .toArray()
-        .then(users => {
-            res.json(users);
-        })
-        .catch(error => {
-            console.error("Error fetching users:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-        });
-});
-
-//get account by id
-app.get('/users/:id', (req, res) => {
-  if (ObjectId.isValid(req.params.id)) {
-    db.collection('user')
-      .findOne({ _id : new ObjectId(req.params.id)})
-      .then(
-        users => {
-            res.status(200).json(users)
-        }
-      )
-      .catch(error => {
-        res.status(500).json({error : 'Document Not Found'})
-      })
-    } else {
-      res.status(500).json({error: 'Invalid uid'})
-    }
-});
-
-//get account by username
-app.get('/users/uname/:uname', (req, res) => {
-    db.collection('user')
-      .findOne({uname : req.params.uname})
-      .then(
-        users => {
-            res.status(200).json(users)
-        }
-      )
-      .catch(error => {
-        res.status(500).json({mssg : 'Document Not Found'})
-      })
-});
-
-//get account by email
-app.get('/users/email/:email', (req, res) => {
-  db.collection('user')
-    .findOne({email : req.params.email})
-    .then(
-      users => {
-          res.status(200).json(users)
-      }
-    )
-    .catch(error => {
-      res.status(500).json({mssg : 'Document Not Found'})
-    })
-});
 
 //create account
+app.use('/users', userRouter);
+
 app.post('/account/create', (req, res) => {
   const info = req.body;
   
@@ -124,68 +68,6 @@ app.delete('/account/:id', (req, res) => {
       res.status(500).json({error: 'Invalid uid'})
     }
 });
-
-//edit account
-app.put('/users/account/edit/:uname', async (req, res) => {
-  const updates = req.body;
-
-  try {
-    // Exclude the _id field from updates
-    delete updates._id;
-
-    const existingUser = await db.collection('user').findOne({ uname: req.params.uname });
-
-    if (!existingUser) {
-      res.status(404).json({ error: 'User not found' });
-      return;
-    }
-
-    const updatedUser = {
-      ...existingUser,
-      ...updates,
-    };
-
-    const result = await db.collection('user').replaceOne(
-      { uname: req.params.uname },
-      updatedUser
-    );
-
-    if (result.modifiedCount === 1) {
-      res.status(200).json({ message: 'Update successful' });
-    } else {
-      res.status(500).json({ error: 'Failed to update' });
-    }
-  } catch (error) {
-    console.error('Error occurred:', error);
-    res.status(500).json({ error: 'Failed to update' });
-  }
-});
-
-
-// app.patch('/users/account/edit/:uname', async (req, res) => {
-//   const updates = req.body;
-
-//   try {
-//     // Exclude the _id field from updates
-//     delete updates._id;
-
-//     const result = await db.collection('user').updateOne(
-//       { uname: req.params.uname },
-//       { $set: updates }
-//     );
-
-//     if (result.matchedCount === 1) {
-//       res.status(200).json({ message: 'Update successful' });
-//     } else {
-//       res.status(404).json({ error: 'User not found' });
-//     }
-//   } catch (error) {
-//     console.error('Error occurred:', error);
-//     res.status(500).json({ error: 'Failed to update' });
-//   }
-// });
-
-
 
 // subscription related code
 app.post("/order", async (req, res) => {
@@ -264,3 +146,8 @@ app.post("/payment/success/:tid", async(req, res) => {
 app.post("/payment/fail/:tid", async(req, res) => {
   res.send({status: 'failed', transaction_id: req.params.tid})
 })
+
+
+module.exports = {
+  db 
+}
