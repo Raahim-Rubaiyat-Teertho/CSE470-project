@@ -1,4 +1,4 @@
-const {connectToDb, getDb} = require("../db")
+const {connectToDb, getDb} = require("../models/db")
 
 connectToDb((err) => {
     db = getDb();
