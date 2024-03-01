@@ -1,9 +1,19 @@
-"use client"
 import { getSessionId } from "@/app/login/handleSessions";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
-export default async function Navbar () {
-    const sess = await getSessionId()
+
+export default function Navbar () {
+    const [sess, setSess] = useState('');
+
+    useEffect(() => {
+        async function fetchData() {
+          const sessionId = await getSessionId();
+          setSess(sessionId);
+        }
+    
+        fetchData();
+      }, []);
 
     return (
         <div className="flex justify-between p-4 bg-black text-white">
@@ -15,11 +25,11 @@ export default async function Navbar () {
                 <div className="pr-5"><Link href="../posts">Posts</Link></div>
                 <div className="pr-5"><Link href="../songs">Songs</Link></div>
                 <div className="pr-5"><Link href="../create">Create</Link></div>
-                <div className="pr-5"><Link href={`../users/${sess}`}></Link></div>
+                <div className="pr-5"><Link href={`../user/${sess}`}>Dashboard</Link></div>
             </div>
 
             <div>
-                Logout
+                <p></p>
             </div>
         </div>
     )

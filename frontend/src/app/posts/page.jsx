@@ -1,5 +1,12 @@
+'use client'
+
+import Navbar from "@/components/ui/navbar";
+
 export default function Posts() {
     return(
-        <div>Posts</div>
+        <div>
+            <Navbar />
+            <p>Posts</p>
+        </div>
     )
 }
