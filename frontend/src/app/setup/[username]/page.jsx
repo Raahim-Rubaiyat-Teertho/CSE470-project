@@ -49,8 +49,8 @@ export default function ProfileSetup() {
         )
         .then(res => res.json())
         .then(res => {
-            window.location.replace(res.url)
             console.log(res)
+            window.location.replace(res.url)
             console.log(user)
         })
     }
