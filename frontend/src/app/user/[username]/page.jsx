@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Navbar from "@/components/ui/navbar"
 
 
 
@@ -75,6 +76,9 @@ export default function UserDashboard({params}) {
     return(
         <>
             <title>Dashboard</title>
+            <div>
+              <Navbar />
+            </div>
             <div className=" min-h-screen py-8">
       <div className="max-w-lg mx-auto bg-white shadow-md rounded-md p-8">
         <h1 className="text-3xl font-semibold mb-4 text-center">Welcome, {data.name}</h1>
