@@ -16,7 +16,7 @@ export default function Posts() {
   useEffect(() => {
     fetch("http://localhost:8000/posts")
       .then((response) => response.json())
-      .then((data) => setPosts(data))
+      .then((data) => setPosts(data.reverse()))
       .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
