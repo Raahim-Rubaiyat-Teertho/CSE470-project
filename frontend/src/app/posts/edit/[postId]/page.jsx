@@ -1,16 +1,31 @@
 'use client'
 
+import { getSessionId } from "@/app/login/handleSessions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Navbar from "@/components/ui/navbar";
+import { Textarea } from "@/components/ui/textarea";
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function EditPost () {
     const [post, setPost] = useState({})
+    const [body, setBody] = useState({})
+    const [uname, setUname] = useState()
     const params = useParams();
+
+    function handleSubmit (formData) {
+        const title = formData.get('title');
+        const description = formData.get('description');
+        setBody({_id: params.postId, uname: uname, title, description, upvotes:0})
+        console.log(body)
+    }
 
     useEffect (
         () => {
             async function fetchPost ()  {
+                const name = await getSessionId();
+                setUname(name)
                 const post_lnk = await fetch(`http://localhost:8000/posts/id=${params.postId}`);
                 const post_json = await post_lnk.json();
                 setPost(post_json);
@@ -22,6 +37,16 @@ export default function EditPost () {
     return (
         <div>
             <Navbar />
+            <h1 className="text-center mt-5 text-3xl">Edit Post</h1>
+
+            <form className="mx-20 mt-10" action={handleSubmit}>
+                <Input defaultValue={post.title} className='font-bold placeholder:font-medium' placeholder='Title' name='title'/>
+                <Textarea defaultValue={post.description} className='mt-5 placeholder:font-medium'placeholder='Description' name='description'/>
+
+                <div className="mt-5">
+                    <Button>Edit</Button>
+                </div>
+            </form>
         </div>
     )
 }
