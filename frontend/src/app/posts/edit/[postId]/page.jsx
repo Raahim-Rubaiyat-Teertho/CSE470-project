@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { getSessionId } from "@/app/login/handleSessions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,19 +11,24 @@ import { useEffect, useState } from "react"
 
 export default function EditPost () {
     const [post, setPost] = useState({})
-    const [body, setBody] = useState({})
+    // const [body, setBody] = useState({})
     const [uname, setUname] = useState()
     const params = useParams();
+    const router = useRouter();
+    const [clickAgain, setClickAgain] = useState(false)
 
-    function handleSubmit (formData) {
-        const title = formData.get('title');
-        const description = formData.get('description');
-        setBody({_id: params.postId, uname: uname, title, description, upvotes:0})
-        console.log(body)
-    }
-    async function handleSubmit() {
+    // function handleSubmit (formData) {
+    //     const title = formData.get('title');
+    //     const description = formData.get('description');
+    //     setBody({uname: uname, title, description, upvotes:0})
+    //     console.log(body)
+    // }
+    async function handleSubmit(formData) {
         try {
-            const response = await fetch(`http://localhost:8000/posts/edit/${params.postId}`, {
+            const title = formData.get('title');
+            const description = formData.get('description');
+            const body = {uname: uname, title, description, upvotes:0}
+            const response = await fetch(`http://localhost:8000/posts/edit/id=${params.postId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -33,6 +39,8 @@ export default function EditPost () {
             if (response.ok) {
                 console.log('Post edited successfully');
                 // You can add further handling here if needed
+                router.push(`/user/${uname}`)
+
             } else {
                 console.error('Failed to edit post');
             }
@@ -63,9 +71,16 @@ export default function EditPost () {
                 <Textarea defaultValue={post.description} className='mt-5 placeholder:font-medium'placeholder='Description' name='description'/>
 
                 <div className="mt-5">
-                    <Button>Edit</Button>
+                    <Button onClick={() => {setClickAgain(true)}}>Edit</Button>
                 </div>
             </form>
+
+            {/* <div className='mt-5'>
+                {
+                    clickAgain && 
+                    <p>Click again to confirm changes</p>
+                }
+            </div> */}
         </div>
     )
 }

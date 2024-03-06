@@ -92,10 +92,35 @@ async function deletePost(req, res) {
         }
 }
 
+async function editPost(req, res) {
+    const postId = req.params.id;
+    const updatedPost = req.body;
+
+    if (ObjectId.isValid(postId)) {
+        try {
+            const result = await db.collection('posts')
+                .updateOne({ _id: new ObjectId(postId) }, { $set: updatedPost });
+
+            if (result.modifiedCount > 0) {
+                res.status(200).json({ success: 'Post updated successfully' });
+            } else {
+                res.status(404).json({ error: 'Post not found' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    } else {
+        res.status(400).json({ error: 'Invalid post ID' });
+    }
+}
+
+
 module.exports ={
     getAllPosts,
     getPostById,
     getPostsbyUname,
     createPost,
-    deletePost
+    deletePost,
+    editPost
 }

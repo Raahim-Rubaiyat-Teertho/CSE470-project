@@ -25,6 +25,7 @@ export default function Posts() {
       <Navbar />
       
       <div className="m-11 mx-20">
+        <h2 className="text-2xl font-bold text-center mb-7">Posts</h2>
         {posts.map((post) => (
             <div className="mb-7" key={post.id}><Card>
             <CardHeader>
