@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Navbar from "@/components/ui/navbar"
+import DashboardOwnPosts from "@/components/ui/dashboardOwnPosts"
 
 
 
@@ -146,7 +147,9 @@ export default function UserDashboard({params}) {
           </div>
         </div>
       </div>
+      <DashboardOwnPosts />
     </div>
+      
             
         </>
     )
