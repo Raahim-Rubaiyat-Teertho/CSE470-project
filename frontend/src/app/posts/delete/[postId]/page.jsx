@@ -51,6 +51,7 @@ export default function DeletePost () {
 
     return (
         <div>
+            <title>Delete Post</title>
             <Navbar />
 
             <h1 className="text-center mt-5 text-3xl">Are you sure you want to delete this post?</h1>
