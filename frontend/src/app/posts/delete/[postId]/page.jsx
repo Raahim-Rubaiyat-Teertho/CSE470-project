@@ -1,7 +1,7 @@
 'use client'
-
+import { useRouter } from 'next/navigation'
 import Navbar from "@/components/ui/navbar";
-import { useParams } from "next/navigation"
+import { useParams } from "next/navigation"; // Changed import from next/navigation to next/router
 import { useEffect, useState } from "react"
 
 import {
@@ -19,15 +19,16 @@ import { getSessionId } from "@/app/login/handleSessions";
 
 export default function DeletePost () {
     const [post, setPost] = useState({})
-    const params = useParams();
+    const params = useParams(); // Using useParams to get postId
     const [user, setUser] = useState();
+    const router = useRouter()
 
     useEffect (
         () => {
             async function fetchPost ()  {
                 const uname = await getSessionId();
                 setUser(uname)
-                const post_lnk = await fetch(`http://localhost:8000/posts/id=${params.postId}`);
+                const post_lnk = await fetch(`http://localhost:8000/posts/id=${params.postId}`); // Using postId from useParams
                 const post_json = await post_lnk.json();
                 setPost(post_json);
                 console.log(post_json);
@@ -35,6 +36,19 @@ export default function DeletePost () {
             fetchPost();
         }, []
     )
+
+    const handleDelete = async () => {
+        try {
+            await fetch(`http://localhost:8000/posts/delete/id=${params.postId}`, {
+                method: 'DELETE',
+            });
+            // Redirect user after successful deletion
+            router.push(`/user/${user}`);
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
+    };
+
     return (
         <div>
             <Navbar />
@@ -58,7 +72,7 @@ export default function DeletePost () {
             </div>
 
             <div className="flex justify-center mt-7">
-                <Button className='mr-5 bg-red-700 hover:bg-red-600'>Delete</Button>
+                <Button onClick={handleDelete} className='mr-5 bg-red-700 hover:bg-red-600'>Delete</Button>
                 <Link href={`/user/${user}`}><Button>Cancel</Button></Link>
             </div>
         </div>
