@@ -20,7 +20,26 @@ export default function EditPost () {
         setBody({_id: params.postId, uname: uname, title, description, upvotes:0})
         console.log(body)
     }
+    async function handleSubmit() {
+        try {
+            const response = await fetch(`http://localhost:8000/posts/edit/${params.postId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
 
+            if (response.ok) {
+                console.log('Post edited successfully');
+                // You can add further handling here if needed
+            } else {
+                console.error('Failed to edit post');
+            }
+        } catch (error) {
+            console.error('Error editing post:', error);
+        }
+    }
     useEffect (
         () => {
             async function fetchPost ()  {
