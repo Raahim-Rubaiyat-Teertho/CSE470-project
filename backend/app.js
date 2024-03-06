@@ -9,6 +9,7 @@ const accountRouter = require('./routes/account.routes');
 const paymentRouter = require('./routes/payment.routes');
 const orderRouter = require('./routes/order.routes');
 const postsRouter = require('./routes/posts.routes');
+const songsRouter = require('./routes/songs.routes')
 
 const app = express();
 app.use(cors());
@@ -44,6 +45,7 @@ app.use('/payment', paymentRouter);
 
 app.use('/posts', postsRouter);
 
+app.use('/songs', songsRouter);
 
 module.exports = {
   db 
