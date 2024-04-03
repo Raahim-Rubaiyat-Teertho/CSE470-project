@@ -9,10 +9,12 @@ const accountRouter = require('./routes/account.routes');
 const paymentRouter = require('./routes/payment.routes');
 const orderRouter = require('./routes/order.routes');
 const postsRouter = require('./routes/posts.routes');
+const musicRouter = require('./routes/music.routes');
 
 const app = express();
 app.use(cors());
 app.use(cookieParser());
+app.use(express.urlencoded({extended: false}))
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -44,7 +46,9 @@ app.use('/payment', paymentRouter);
 
 app.use('/posts', postsRouter);
 
+app.use('/music', musicRouter);
+
 
 module.exports = {
-  db 
+  db
 }
