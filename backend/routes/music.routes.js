@@ -21,7 +21,7 @@ router.post('/')
 
 router.get('/all', getAllSongs);
 router.get('/:id', getSongById);
-router.get('/:uname', getSongsbyArtist);
+router.get('/uname=:uname', getSongsbyArtist);
 router.get('/:title', getSongbyTitle);
 
 module.exports = router;

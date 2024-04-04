@@ -94,23 +94,22 @@ async function getSongsbyArtist(req, res) {
     }
 }
 
+
 async function getSongbyTitle (req, res) {
     db.collection('songs')
-      .find({title : req.params.title})
-      .toArray()
+      .findOne({title : req.params.title}) // Changed to findOne
       .then(
-        songs => {
-            res.status(200).json(songs)
+        song => {
+            res.status(200).json(song) // Changed to json(song) instead of json(songs)
         }
       )
       .catch(
         error => {
-            res.status(500).json({error : 'Could not find songs'})
+            res.status(500).json({error : 'Could not find song'})
         }
       )
-
-
 }
+
 
 module.exports ={
     // upload, 
