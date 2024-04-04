@@ -43,11 +43,79 @@ async function postMusic (req, res) {
 
 }
 
+async function getAllSongs (req, res) {
+    db.collection('songs')
+      .find()
+      .toArray()
+      .then(
+        songs => {
+            res.status(200).json(songs)
+        }
+      )
+      .catch(
+        error => {
+            res.status(500).json({error : 'Could not find songs'})
+        }
+      )
+
+}
 
 
+// get songs by id
+async function getSongById(req, res) {
+    if (ObjectId.isValid(req.params.id)) {
+        db.collection('songs')
+        .findOne({_id: new ObjectId(req.params.id)})
+        .then(
+            song => {
+                res.status(200).json(song)
+            }
+        )
+        .catch(
+            error => {
+                res.status(500).json({error : 'Could not find song'})
+            }
+        )
+        }
+}
+
+// get songs by artist name
+async function getSongsbyArtist(req, res) {
+    const { uname } = req.params;
+    const collection = db.collection('songs');
+    
+    try {
+        const userSongs = await collection.find({ uname }).toArray();
+        res.json(userSongs);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+async function getSongbyTitle (req, res) {
+    db.collection('songs')
+      .findOne({title : req.params.title}) // Changed to findOne
+      .then(
+        song => {
+            res.status(200).json(song) // Changed to json(song) instead of json(songs)
+        }
+      )
+      .catch(
+        error => {
+            res.status(500).json({error : 'Could not find song'})
+        }
+      )
+}
 
 
 module.exports ={
     // upload, 
-    postMusic
+    postMusic,
+    getAllSongs,
+    getSongById,
+    getSongsbyArtist,
+    getSongbyTitle
 }
