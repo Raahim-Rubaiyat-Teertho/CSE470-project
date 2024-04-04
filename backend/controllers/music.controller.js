@@ -60,6 +60,25 @@ async function getAllSongs (req, res) {
 
 }
 
+// get songs by artist name
+async function getSongsbyArtist (req, res) {
+    const { uname } = req.params;
+    const collection = db.collection('songs');
+    console.log('req')
+    
+    try {
+        const userSongs = await collection.find({ uname }).toArray();
+
+        if (userSongs.length > 0) {
+        res.json(userSongs);
+        } else {
+        res.status(404).json({ message: 'No posts found for the specified uname.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
 
 // get songs by id
 async function getSongById(req, res) {
@@ -79,20 +98,6 @@ async function getSongById(req, res) {
         }
 }
 
-// get songs by artist name
-async function getSongsbyArtist(req, res) {
-    const { uname } = req.params;
-    const collection = db.collection('songs');
-    
-    try {
-        const userSongs = await collection.find({ uname }).toArray();
-        res.json(userSongs);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-}
 
 
 async function getSongbyTitle (req, res) {

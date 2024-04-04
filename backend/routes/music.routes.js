@@ -19,9 +19,8 @@ const storage = multer.diskStorage({
 router.post('/upload', upload.single('music'), postMusic);
 router.post('/')
 
+router.get('/artist/:uname', getSongsbyArtist);
 router.get('/all', getAllSongs);
 router.get('/:id', getSongById);
-router.get('/uname=:uname', getSongsbyArtist);
-router.get('/:title', getSongbyTitle);
-
+router.get('/title/:title', getSongbyTitle);
 module.exports = router;
