@@ -20,8 +20,13 @@ export default function Posts() {
       .catch((error) => console.error("Error fetching posts:", error));
   }, []);
 
+  async function handleUpvote () {
+    console.log('Upvoted')
+  }
+
   return (
     <div>
+      <title>Posts</title>
       <Navbar />
       
       <div className="m-11 mx-20">
@@ -36,7 +41,11 @@ export default function Posts() {
             </CardContent>
             <CardFooter>
             <div className="mr-3">
-            <svg className="hover:animate-bounce" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM385 231c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-71-71V376c0 13.3-10.7 24-24 24s-24-10.7-24-24V193.9l-71 71c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 119c9.4-9.4 24.6-9.4 33.9 0L385 231z"/></svg>
+            <form action={handleUpvote}>
+              <button>
+              <svg className="hover:animate-bounce" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="25" height="25"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM385 231c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-71-71V376c0 13.3-10.7 24-24 24s-24-10.7-24-24V193.9l-71 71c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L239 119c9.4-9.4 24.6-9.4 33.9 0L385 231z"/></svg>
+              </button>
+            </form>
             </div>
             <div>{post.uname}</div>
             

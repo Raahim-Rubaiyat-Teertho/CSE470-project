@@ -116,11 +116,54 @@ async function getSongbyTitle (req, res) {
 }
 
 
+const fs = require('fs');
+
+// Modify your getSongById function to stream the audio file
+async function streamSongById(req, res) {
+    if (ObjectId.isValid(req.params.id)) {
+        const song = await db.collection('songs').findOne({_id: new ObjectId(req.params.id)});
+        if (song) {
+            const path = song.path; // Get the path to the audio file from the database
+            const stat = fs.statSync(path);
+            const fileSize = stat.size;
+            const range = req.headers.range;
+
+            if (range) {
+                const parts = range.replace(/bytes=/, '').split('-');
+                const start = parseInt(parts[0], 10);
+                const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+                const chunkSize = (end - start) + 1;
+                const file = fs.createReadStream(path, { start, end });
+                const headers = {
+                    'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+                    'Accept-Ranges': 'bytes',
+                    'Content-Length': chunkSize,
+                    'Content-Type': 'audio/mpeg',
+                };
+                res.writeHead(206, headers);
+                file.pipe(res);
+            } else {
+                const headers = {
+                    'Content-Type': 'audio/mpeg',
+                    'Content-Length': fileSize,
+                };
+                res.writeHead(200, headers);
+                fs.createReadStream(path).pipe(res);
+            }
+        } else {
+            res.status(404).json({ error: 'Song not found' });
+        }
+    } else {
+        res.status(400).json({ error: 'Invalid song ID' });
+    }
+}
+
 module.exports ={
     // upload, 
     postMusic,
     getAllSongs,
     getSongById,
     getSongsbyArtist,
-    getSongbyTitle
+    getSongbyTitle,
+    streamSongById,
 }
