@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import OwnPosts from "./ownPosts"
+import OwnSongs from "./ownSongs"
 
 export default function DashboardOwnPosts () {
     const [showOwnPosts, setShowOwnPosts] = useState(true)
@@ -27,9 +28,9 @@ export default function DashboardOwnPosts () {
 
         <div>
             {
-                showOwnPosts && 
+                showOwnPosts ?
 
-                <OwnPosts />
+                <OwnPosts /> : <OwnSongs />
             }
         </div>
         
