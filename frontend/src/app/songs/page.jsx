@@ -88,6 +88,7 @@ export default function Posts() {
       <Navbar />
       
       <div className="m-11 mx-20">
+        <title>Songs</title>
         <h2 className="text-2xl font-bold text-center mb-7">Songs</h2>
         {posts.map((post) => (
           <div className="mb-7" key={post.id}>
@@ -109,7 +110,7 @@ export default function Posts() {
                 </div>
                 <div>{post.uname}</div>
                 {/* Button to stream audio */}
-                <button onClick={() => streamAudio(post.id)}>Stream</button>
+                {/* <button onClick={() => streamAudio(post.id)}>Stream</button> */}
               </CardFooter>
             </Card>
           </div>
