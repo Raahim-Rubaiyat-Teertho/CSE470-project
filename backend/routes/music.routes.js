@@ -1,5 +1,5 @@
 const express = require('express');
-const {postMusic, getAllSongs, getSongById, getSongsbyArtist, getSongbyTitle, streamSongById} = require('../controllers/music.controller');
+const {postMusic, getAllSongs, getSongById, getSongsbyArtist, getSongbyTitle, streamSongById, upvotePost} = require('../controllers/music.controller');
 const router = express.Router();
 const multer = require('multer')
 
@@ -23,5 +23,6 @@ router.get('/artist/:uname', getSongsbyArtist);
 router.get('/all', getAllSongs);
 router.get('/:id', getSongById);
 router.get('/title/:title', getSongbyTitle);
-router.get('/stream/:id', streamSongById)
+router.get('/stream/:id', streamSongById);
+router.put('/:id/upvote', upvotePost);
 module.exports = router;

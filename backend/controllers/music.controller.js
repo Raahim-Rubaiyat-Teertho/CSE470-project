@@ -158,6 +158,57 @@ async function streamSongById(req, res) {
     }
 }
 
+async function upvotePost(req, res) {
+    const postId = req.params.id;
+    const { uname } = req.body;
+
+    // Check if the post ID is valid
+    if (!ObjectId.isValid(postId)) {
+        return res.status(400).json({ error: 'Invalid post ID' });
+    }
+
+    // Get the database instance
+    const db = getDb();
+
+    try {
+        // Find the post by its ID
+        const post = await db.collection('songs').findOne({ _id: new ObjectId(postId) });
+
+        // Check if the post exists
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Check if the user has already upvoted the post
+        if (post.upvoted_by.includes(uname)) {
+            // User already upvoted, so remove their upvote
+            const result = await db.collection('songs').updateOne(
+                { _id: new ObjectId(postId) },
+                { $inc: { upvotes: -1 }, $pull: { upvoted_by: uname } }
+            );
+            if (result.modifiedCount === 0) {
+                return res.status(500).json({ error: 'Failed to remove upvote' });
+            }
+        } else {
+            // User hasn't upvoted, so add their upvote
+            const result = await db.collection('songs').updateOne(
+                { _id: new ObjectId(postId) },
+                { $inc: { upvotes: 1 }, $push: { upvoted_by: uname } }
+            );
+            if (result.modifiedCount === 0) {
+                return res.status(500).json({ error: 'Failed to add upvote' });
+            }
+        }
+
+        // Return success response
+        return res.status(200).json({ success: 'Upvote toggled successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
 module.exports ={
     // upload, 
     postMusic,
@@ -166,4 +217,5 @@ module.exports ={
     getSongsbyArtist,
     getSongbyTitle,
     streamSongById,
+    upvotePost
 }
