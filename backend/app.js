@@ -11,6 +11,7 @@ const orderRouter = require('./routes/order.routes');
 const postsRouter = require('./routes/posts.routes');
 const musicRouter = require('./routes/music.routes');
 const audienceStatRouter = require('./routes/audience_stats.routes');
+const artistStatRouter = require('./routes/artist_stats.routes');
 
 const app = express();
 app.use(cors());
@@ -49,7 +50,9 @@ app.use('/posts', postsRouter);
 
 app.use('/music', musicRouter);
 
-app.use('/stats', audienceStatRouter);
+app.use('/stats/audience', audienceStatRouter);
+
+app.use('/stats/artist', artistStatRouter);
 
 module.exports = {
   db
