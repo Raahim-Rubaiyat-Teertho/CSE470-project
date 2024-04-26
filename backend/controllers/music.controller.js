@@ -26,7 +26,9 @@ async function postMusic (req, res) {
         uname: req.body.uname,
         title: req.body.title,
         song_name: req.file.originalname,
-        path: req.file.path
+        path: req.file.path,
+        upvotes: 0,
+        upvoted_by: []
     }
     await db.collection('songs')
         .insertOne(post)

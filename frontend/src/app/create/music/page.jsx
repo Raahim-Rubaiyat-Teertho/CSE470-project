@@ -29,23 +29,17 @@ export default function CreateMusic () {
     }, []);
 
 
-    async function handleFormSubmit(formData) {
-        const title = formData.get("title");
-        const musicFile = formData.get("music");
-        const body = {
-            uname: uname,
-            title: title,
-            music: musicFile,
-            upvotes: 0,
-            upvoted_by: []
-        };
-    
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        formData.append('uname', uname)
+
         try {
             const response = await fetch('http://localhost:8000/music/upload', {
                 method: 'POST',
-                body: JSON.stringify(body),
+                body: formData,
             });
-    
+
             if (response.ok) {
                 toast('Posted Successfully!', {
                     action: {
@@ -60,8 +54,6 @@ export default function CreateMusic () {
             console.error('Error:', error);
         }
     }
-    
-    
 
     return (
         <div>
