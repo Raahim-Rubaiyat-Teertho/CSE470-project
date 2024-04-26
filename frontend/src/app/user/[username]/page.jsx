@@ -147,7 +147,7 @@ export default function UserDashboard({params}) {
     </Dialog>
           </div>
           <div className="flex justify-start">
-            <Link href='./#'>
+            <Link href='../stats'>
               <Button className="mr-2">Your Stats</Button>
             </Link>
           </div>
