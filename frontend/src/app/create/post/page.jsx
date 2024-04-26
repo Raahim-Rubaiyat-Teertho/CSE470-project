@@ -34,7 +34,8 @@ export default function CreatePost ({ props }) {
             uname: uname,
             title : title,
             description : content,
-            upvotes : 0
+            upvotes : 0,
+            upvoted_by : []
         }
 
         try {
