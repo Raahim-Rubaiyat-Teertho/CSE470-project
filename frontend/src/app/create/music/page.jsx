@@ -32,19 +32,21 @@ export default function CreateMusic () {
     async function handleFormSubmit(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        formData.append('uname', uname)
-
+        formData.append('uname', uname);
+        formData.append('upvotes', 0); // Default value for upvotes
+        formData.append('upvoted_by', JSON.stringify([])); // Empty array for upvoted_by
+    
         try {
             const response = await fetch('http://localhost:8000/music/upload', {
                 method: 'POST',
                 body: formData,
             });
-
+    
             if (response.ok) {
                 toast('Posted Successfully!', {
                     action: {
-                        label: 'See Posts',
-                        onClick: () => router.push('/posts')
+                        label: 'See Songs',
+                        onClick: () => router.push('/songs')
                     }
                 });
             } else {
@@ -54,6 +56,7 @@ export default function CreateMusic () {
             console.error('Error:', error);
         }
     }
+    
 
     return (
         <div>
