@@ -29,7 +29,7 @@ export default function CreateMusic () {
     }, []);
 
 
-    async function uploadMusic(formData) {
+    async function handleFormSubmit(formData) {
         const title = formData.get("title");
         const musicFile = formData.get("music");
         const body = {
