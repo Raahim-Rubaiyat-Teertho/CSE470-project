@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Navbar from "@/components/ui/navbar"
 import DashboardOwnPosts from "@/components/ui/dashboardOwnPosts"
+import Link from "next/link"
 
 
 
@@ -144,6 +145,11 @@ export default function UserDashboard({params}) {
         </form>
       </DialogContent>
     </Dialog>
+          </div>
+          <div className="flex justify-start">
+            <Link href='./#'>
+              <Button className="mr-2">Your Stats</Button>
+            </Link>
           </div>
         </div>
       </div>

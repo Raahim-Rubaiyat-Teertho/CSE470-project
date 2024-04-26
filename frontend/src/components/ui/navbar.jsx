@@ -25,6 +25,7 @@ export default function Navbar () {
                 <div className="pr-5"><Link href="/posts">Posts</Link></div>
                 <div className="pr-5"><Link href="/songs">Songs</Link></div>
                 <div className="pr-5"><Link href="/create">Create</Link></div>
+                <div className="pr-5"><Link href="/search">Search</Link></div>
                 <div className="pr-5"><Link href={`/user/${sess}`}>Dashboard</Link></div>
             </div>
 
