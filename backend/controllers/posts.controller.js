@@ -57,6 +57,25 @@ async function getPostsbyUname (req, res) {
     }
 }
 
+async function getPostsbyTitle (req, res) {
+    const { title } = req.params;
+    const collection = db.collection('posts');
+    
+    try {
+        const posts = await collection.find({ title }).toArray();
+
+        if (posts.length > 0) {
+        res.json(posts);
+        } else {
+        res.status(404).json({ message: 'No posts found for the specified uname.' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
 //create a post
 async function createPost (req, res) {
     const post = req.body;
@@ -174,5 +193,6 @@ module.exports ={
     createPost,
     deletePost,
     editPost, 
-    upvotePost
+    upvotePost,
+    getPostsbyTitle
 }

@@ -67,7 +67,13 @@ export default function OwnPosts () {
                 const uname = await getSessionId();
                 const data = await fetch(`http://localhost:8000/posts/${uname}`);
                 const data_json = await data.json();
-                setPosts(data_json.reverse());
+                if(data_json.length > 1) {
+                  setPosts(data_json.reverse());
+                }
+
+                else {
+                  setPosts(data_json)
+                }
             }
             fetchData ();
         }, []
